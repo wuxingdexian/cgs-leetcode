@@ -1,6 +1,7 @@
 package depthfirstsearch.easy;
 
-import com.shen.depthfirstsearch.TreeNode;
+
+import depthfirstsearch.TreeNode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
