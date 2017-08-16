@@ -29,6 +29,8 @@ import java.util.Stack;
  * 设定有序对(numberList，candidate[i到n], T, tmpSum)，其中numberList存放遍历过程从candidate数组中取到的合法number，candidate数组为要取数的数组，i > 0
  * T为target数，tmpSum为numberList中累加和。
  * 设定条件：（1）tmpSum < T；（2）T - tmp > candidate[i]，i为决策过程本次合法candidate数组中的第一个值；
+ *
+ * // TODO: 15/08/2017 这个应该是背包问题，使用动态规划试试
  * 2. 算法范式：backtracking
  * 3. 算法：深度遍历决策树，代码角度，需要横向看本次执行时候的数据结构中数据的变化。
  * 4. 数据结构：记忆数字数据结构模型是栈。可以使用arrayList执行，速度会快；使用Stack会慢些，因为底层使用的是vector实现
