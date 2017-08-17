@@ -52,11 +52,13 @@ import java.util.List;
  * @since cgs-leetcode on  17/08/2017
  */
 public class BinaryTreeLevelOrderTraversalII {
+    //--------------深度优先----------------------
+    /*
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
 
         List[] levelList = new List[1000];
         preOrderDfs(root, levelList, 0);
-        // 使用linkedList，方便头插入
+        // LinkedList 方便头插入 提升插入效率
         List<List<Integer>> bottomUp = new LinkedList();
         for(int i = 0; i < levelList.length; i++) {
             if(levelList[i] == null) {
@@ -69,6 +71,7 @@ public class BinaryTreeLevelOrderTraversalII {
 
     void preOrderDfs(TreeNode root, List[] levelList, int level) {
         if(root != null) {
+
             List<Integer> values = levelList[level] != null? levelList[level]: new ArrayList();
             values.add(root.val);
             levelList[level] = values;
@@ -76,5 +79,45 @@ public class BinaryTreeLevelOrderTraversalII {
             preOrderDfs(root.right, levelList, level + 1);
         }
     }
+    */
+    //--------------深度优先----------------------
+
+
+    //--------------广度优先----------------------
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+
+        // 制定LinkedList提升插入效率
+        List<List<Integer>> values = new LinkedList();
+        if(root != null) {
+            List<TreeNode> currentLevelNodes = new ArrayList();
+            currentLevelNodes.add(root);
+            bfs(currentLevelNodes, values);
+        }
+
+        return values;
+
+    }
+
+    // 由于是bfs，肯定是逐层下降，这里使用LinkedList方便插入，就不记录level了
+    void bfs(List<TreeNode> currentLevelNodes, List<List<Integer>> values) {
+        if(currentLevelNodes == null || currentLevelNodes.size() == 0) {
+            return;
+        }
+        List<TreeNode> nextLevelNodes = new ArrayList();
+        List<Integer> currentLevelValues = new ArrayList();
+        for(TreeNode root: currentLevelNodes) {
+            currentLevelValues.add(root.val);
+            if(root.left != null) {
+                nextLevelNodes.add(root.left);
+            }
+            if(root.right != null) {
+                nextLevelNodes.add(root.right);
+            }
+        }
+        // 前插
+        values.add(0, currentLevelValues);
+        bfs(nextLevelNodes, values);
+    }
+    //--------------深度优先----------------------
 
 }

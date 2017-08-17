@@ -22,13 +22,15 @@ package breadthfirstsearch.medium;
  ]
  * <p>
  * 1. 建模：
- * 二叉树
- * bfs
+ * 二叉树，设定有序对(level, currentNode[], currentValues[])，深度从0开始，当深度为偶数是从左到右排序，奇数时则反过来。
+ * currentValues当前层级节点值集合，currentNode当前层级的节点集合
+ *
  * 2. 算法范式：
  *
  * 3. 算法：
  * bfs
  * 4. 数据结构：
+ * LinkedList
  * 5. 改进：
  * 6. 启发：
  * 7. jdk知识：
