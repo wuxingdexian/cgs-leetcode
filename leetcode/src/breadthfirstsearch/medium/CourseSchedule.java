@@ -37,8 +37,8 @@ import java.util.List;
  * 从入度为0的in_degree_0_nodes开始遍历，分别从这些点出发，深度遍历，同时记录走过的路径，若遍历过程的节点是已经走过的节点，那么存在环。
  *
  * 2. 算法范式：
- * 3. 算法：
- * 4. 数据结构：
+ * 3. 算法：bfs
+ * 4. 数据结构：图的edge list改为adjacency list或adjacency matrix表示，方便操作
  * 5. 改进：
  * 6. 启发：
  * 7. jdk知识：
