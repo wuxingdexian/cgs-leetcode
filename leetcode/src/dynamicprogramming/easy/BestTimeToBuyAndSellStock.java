@@ -19,9 +19,12 @@ package dynamicprogramming.easy;
 
  * In this case, no transaction is done, i.e. max profit = 0.
  * <p>
- * 1. 建模：（1）recurrence relation；（2）relation，ordered pairs。
+ * 1. 建模：
+ * （1）recurrence relation；（2）relation，ordered pairs。
  * Bestn_1=(ai,aj)定义为第n-1次得到的最大收益有序对，i<=j且ai<=aj；
- * recurrence relation:Bestn=max(Bestn_1,(ax,an))，ax为遍历数组时的当前最小值
+ * recurrence relation:Best(n)=max(Best(n-1),(a(x),a(n)))，ax为遍历数组时的当前最小值
+ * （2）分治法，找左右两边最大的，然后合并处理是否有连续递增的特殊部分
+ *
  * 2. 算法范式
  * 3. 算法
  * 4. 数据结构
