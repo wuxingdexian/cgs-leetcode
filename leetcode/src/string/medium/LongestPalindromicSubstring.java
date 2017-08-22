@@ -33,11 +33,38 @@ import java.util.Set;
  *
  * （3）马拉车算法，利用对称性，从数学角度说明，很🐂B
  * http://www.zrzahid.com/longest-palindromic-substring-in-linear-time/ 从数学的角度阐明了该算法。很厉害，比中文博客一堆描述最后还不懂，厉害。可见数学功底
+ *
+ * 根据马拉车算法，建模：
+ * 核心：回文的对称性！
+ * 设定点i的对称半径为p(i)，当前的中心center的坐标为点c，点c的辐射范围（半径）为p(c)，坐标半径最小的坐标点为min，右边为max。
+ * 设i为点c右边的点，则根据点c对称性，设左边的对称点为i'，分情况讨论可以得知
+ *  1）当i <= max时，若
+ *      a) p(i') < i'-min = max-i，则p(i)=p(i')
+ *      b) p(i') >= i'-min = max-i，则p(i)=max-i+extending，并且c=i，max=i+p(i)，更换中心点。extending为扩充半径，需要左右对称比较字符来计算
+ *  2）当i > max时，p(i)=0+extending，并且c=i，max=i+p(i)，更换中心点。extending为扩充半径，需要左右对称比较字符来计算
+ * 注意：因为回文有偶数和奇数长度，当为奇数时，上面建模时成立的，但是为偶数时则失败。
+ * 比如：abaaba和abcba。此时在字符串前后以及两两字符间要填充固定的特殊字符，得到2k+1长度的串，为奇数长度。666
+ *  3）当计算完所有，找出p(i)最大的点i，然后即得知最大回文串的长度，此时定位原始串的开始或结束为止即可找出该串。
+ *  若数组使用0作为起点，那么原始串字符通过x' = 2*x + 1的方式映射到处理串。通过(x'-1)/2即返回定位
+ *  画个图即清楚
+ *
+ * （4）follow up找出所有的回文序列
+ *
  * 2. 算法范式：
  * 3. 算法：
+ * Manacher’s Algorithm
+ * （1）原始字符串预处理
+ * （2）遍历处理后的字符串，计算每个字符的p(i)
+ * （3）遍历处理后的字符串，找到p(x)最大的点x，通过(x-1)/2定位原始串的开始位置
+ * （4）找到长度为p(x)的子串
  * 4. 数据结构：
  * 5. 改进：
  * 6. 启发：
+ * 在处理数组边界或映射时很容易搞错。。。。
+ * 需要注意计算机整除重复后得到的时下取整
+ * 2*i-1 < 2*i < 2*i+1
+ * 上面式子都除以2，由于计算机下取整，得到i-1 < i <=i
+ * {@link LongestPalindromicSubstring#findTheStartIndex(int, int)} 更加上面下取整的公式，分别对偶数和奇数长度字符串预处理后的字符和#号演练即得到结果
  * 7. jdk知识：
  * <p>
  * <a href="dhshenchanggan@163.com" />
@@ -130,5 +157,96 @@ public class LongestPalindromicSubstring {
 
         return all;
     }
-    //-----------
+    //-------------------------------参考答案------------------------
+
+    //-------------------------------独自实现------------------------
+    private final char special = '#';
+    public String longestPalindrome(String s) {
+        char[] preString = preprocess(s);
+        int[] radius = new int[preString.length];
+        calculatTheLengthOfPalindrome(preString, radius);
+        int center = findTheLongestPalindromeCenter(radius);
+        int start = findTheStartIndex(center, radius[center]);
+        return findTheLongestPalindrome(start, radius[center], s);
+    }
+
+    char[] preprocess(String s) {
+        char[] preString = new char[2 * s.length() + 1];
+        preString[0] = special;
+        for(int i = 0; i < s.length(); i++) {
+            preString[2 * i + 1] = s.charAt(i);
+            preString[2 * i + 2] = special;
+        }
+        return preString;
+    }
+
+    void calculatTheLengthOfPalindrome(char[] preString, int[] radius) {
+        radius[0] = 0;
+        int center = 0;
+        int max = 0;
+        for(int i = 1; i < preString.length; i++) {
+            if(i <= max) {
+                int symmatric = 2 * center - i;
+                if(symmatric < 0) {
+                    radius[i] = findExtendingLength(preString, i, max + 1);
+                    center = i;
+                    max = i + radius[i];
+                    continue;
+                }
+
+                if(radius[symmatric] < max - i) {
+                    radius[i] = radius[symmatric];
+                } else {
+                    radius[i] = max - i + findExtendingLength(preString, i, max + 1);
+                    center = i;
+                    max = i + radius[i];
+                }
+
+            } else {
+                radius[i] = findExtendingLength(preString, i, i + 1);
+                center = i;
+                max = i + radius[i];
+            }
+        }
+    }
+
+    private int findExtendingLength(char[] preString, int center, int rightIndex) {
+        int extendingLength = 0;
+        while(rightIndex < preString.length && 2 * center - rightIndex >= 0) {
+            if(preString[rightIndex] == preString[2 * center - rightIndex]) {
+                extendingLength++;
+                rightIndex++;
+            } else {
+                break;
+            }
+        }
+        return extendingLength;
+    }
+
+    int findTheLongestPalindromeCenter(int[] radius) {
+        int index = 0;
+        int r = radius[0];
+        for(int i = 0; i < radius.length; i++) {
+            if(radius[i] > r) {
+                r = radius[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    // 下取整，容易搞错
+    int findTheStartIndex(int center, int radius) {
+        return (center - radius) / 2;
+    }
+
+    String findTheLongestPalindrome(int start, int length, String s) {
+        return s.substring(start, start + length);
+    }
+    //-------------------------------独自实现------------------------
+
+    public static void main(String[] args) {
+        String babad = new LongestPalindromicSubstring().longestPalindrome("cbbbd");
+        System.out.println(babad);
+    }
 }
