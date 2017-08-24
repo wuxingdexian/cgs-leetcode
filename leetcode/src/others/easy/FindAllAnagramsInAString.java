@@ -2,8 +2,7 @@ package others.easy;
 
 import sort.easy.ValidAnagram;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -55,7 +54,15 @@ import java.util.List;
  *
  * 注意：这个function不是单射，因为对于ac和bb两个字符串有相同的sum。
  *
- * // TODO: 22/08/2017 明天看下别人如何使用滑动窗口的办法来解决这题
+ * // TODO: 22/08/2017 明天看下别人如何使用滑动窗口的办法来解决这题 https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/，
+ * 参考上面链接，根据别人的代码整理的模型 《Sliding Window algorithm template to solve all the Leetcode substring search problem.》
+ * domain：从0开始，分别截取连续长度为length(t)的子串sub_s(i)
+ * codomain：t的所有字符构建的有序对ordered-pair，T(i) = (t.charAt(i), 1)，i={1,2,...,t.length}
+ * function：s中长度为length(t)的子串sub_s(i)，每个字符和t构建的codomain中的字符映射，并且数量相等。 // FIXME: 23/08/2017 注意，这个函数不是单射
+ * 如：aabbc 和bab
+ * sub_s(1)=abb，两个b和下面有序对的b映射，；两个b数量相等和有序对b的value相等。 注意：不是单射函数
+ * ordered paired:(b,2), (a,1)
+ *
  * 2. 算法范式：
  * 3. 算法：
  * （1）计算t的和sum(t)
@@ -63,10 +70,30 @@ import java.util.List;
  * （3）遍历s预处理后的子串和，找到和sum(t)相同的值；单独遍历这个子串和t是否变位词
  * （4）对于两个子串比较是否为变位词，则有很多办法了  参考{@link ValidAnagram}
  *
+ * TODO
+ * 根据别人的代码整理的模型 《Sliding Window algorithm template to solve all the Leetcode substring search problem.》
+ * （1）遍历t，对于每个字符，构建其中有序对，使用hashMap存储。
+ * （2）设定有序对个数counter=hashMap的元素个数
+ * （3）设定head、tail两个指针，head指向的字符s.charAt(i)，i={1,2,...,s.length}，
+ *      1）如果和有序对T(j)的key相等，则T(j)的value-1，同时counter减1；
+ *      2）head前进1位；
+ * （4）当counter等于0的时候，
+ *      1）判断length(head-tail)是否等于length(t)，若相等，则保存tail的位置信息。
+ *      2）tail前进1位，判断tail当前指向的字符，通过function，是否找到hashMap中有序对T(j)，若找到，则有序对value+1，同时counter+1；
+ *      3）执行上述两个步骤，直到counter不等于0
+ * （5）执行上面步骤（3）和（4）直到结束
+ * FIXME: 23/08/2017 通过上述对别人代码的细节进行建模，可以看出
+ * FIXME（1）这个滑动窗口不是严格意义的窗口，两个指针head和tail的区域使得窗口长度变动。
+ * FIXME（2）函数不是单射，原作者使用“ 1）length(head-tail)是否等于length(t)；2）counter是否等于0；”两个来辅助条件来判断结论是否成立。 速度很快 good job
+ *
+ *
  * 4. 数据结构：
+ * 有序对ordered-pair(t.charAt(i), 1)，使用hashMap存储
  * 5. 改进：
  * 6. 启发：从set+function角度出来，这个更底层的思维方式和模式不错。 从{@link ValidAnagram}这个题目引发出来的感悟
  * 7. jdk知识：
+ * java1.8开始新增了default限制符，能在接口中默认方法的实现http://blog.csdn.net/wwwsssaaaddd/article/details/24213525
+ * java 1.8 开始新增了这个函数，不错！{@link Map#getOrDefault(Object, Object)}
  * <p>
  * <a href="dhshenchanggan@163.com" />
  *
@@ -75,6 +102,81 @@ import java.util.List;
  * @since cgs-leetcode on  22/08/2017
  */
 public class FindAllAnagramsInAString {
+
+    // 根据上面模型2编码 感觉还有有点绕，不太好理解
+    public List<Integer> findAnagrams2(String s, String p) {
+
+        Map<Character, Integer> charHashMap = getHashMap(p);
+        int head, tail = 0, counter = charHashMap.size();
+        List<Integer> solutions = new ArrayList<>();
+        for (head = 0; head < s.length(); head++) {
+            if(null != charHashMap.get(s.charAt(head))) {
+                charHashMap.put(s.charAt(head), charHashMap.get(s.charAt(head)) - 1);
+                if (charHashMap.get(s.charAt(head)) == 0) {
+                    // 这个条件判断至关重要
+                    counter--;
+                }
+            }
+            while (counter == 0 && tail <= head) {
+                if(head - tail + 1 == p.length()) {
+                    solutions.add(tail);
+                }
+
+                if(null != charHashMap.get(s.charAt(tail))) {
+                    charHashMap.put(s.charAt(tail), charHashMap.get(s.charAt(tail)) + 1);
+                    if (charHashMap.get(s.charAt(tail)) > 0) {
+                        // 这个条件判断至关重要
+                        counter++;
+                    }
+                }
+                tail++;
+            }
+        }
+        return solutions;
+    }
+
+    Map<Character, Integer> getHashMap(String p) {
+        Map<Character, Integer> hashMap = new HashMap<>();
+        for (int i = 0; i < p.length(); i++) {
+            hashMap.put(p.charAt(i), hashMap.getOrDefault(p.charAt(i), 0) + 1);
+        }
+        return hashMap;
+    }
+
+
+
+    /*
+    // 加法function有bug，如 "op" "by"
+    public List<Integer> findAnagrams(String s, String p) {
+        if(s == null || p == null || s.length() == 0 || s.length() < p.length()) {
+            return new ArrayList();
+        }
+
+        // 26个数组，分别和字母对应
+        int[] primes = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101};
+        int pSum = 0;
+        for(int j = 0; j < p.length(); j++) {
+            pSum += primes[p.charAt(j) - 'a'];
+        }
+
+        int[] sSum = new int[s.length() - p.length() + 1];
+
+        for(int j = 0; j < p.length(); j++) {
+            sSum[0] += primes[s.charAt(j) - 'a'];
+        }
+        List<Integer> solutions = new ArrayList();
+        if(sSum[0] == pSum) {
+            solutions.add(0);
+        }
+        for(int i = 1; i < sSum.length; i++) {
+            sSum[i] = sSum[i - 1] + primes[s.charAt(p.length() - 1 + i) - 'a'] - primes[s.charAt(i - 1) - 'a'];
+            if(sSum[i] == pSum) {
+                solutions.add(i);
+            }
+        }
+        return solutions;
+    }
+    */
 
     /**
      * 这是根据set+function启示设计的算法，accepted后，300ms，有点慢。// TODO: 23/08/2017 看下别人是如何做的
@@ -127,7 +229,7 @@ public class FindAllAnagramsInAString {
     }
 
     public static void main(String[] args) {
-        List<Integer> anagrams = new FindAllAnagramsInAString().findAnagrams("cbaebabacd", "abc");
+        List<Integer> anagrams = new FindAllAnagramsInAString().findAnagrams2("cbaebabacdbca", "abc");
         System.out.println(anagrams);
     }
 }
