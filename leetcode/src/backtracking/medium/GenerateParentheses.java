@@ -22,6 +22,7 @@ import java.util.Set;
  "()()()"
  ]
  * <p>
+ * 0. 本质：排列，关系
  * 1. 建模：
  * （1）决策树建模，开始为一个“()”，下面有三个三个节点，分别对应在左中右三个位置插入新的括号；期间会有重复的括号生成，需要set去重；
  *               ()
@@ -35,6 +36,16 @@ import java.util.Set;
  *                                  (parentheses_char[2n](其中parentheses_char[0]='('), L_char[n-1], R_char[n])
  *  (parentheses_char[2n](其中parentheses_char[0]='('，parentheses_char[1]='('), L_char[n-2], R_char[n]),  (parentheses_char[2n](其中parentheses_char[0]='('，parentheses_char[1]=')'), L_char[n-1], R_char[n-1]),
  *  .....
+ *
+ * （3）recurrence relation
+ * 设定num('(')为左括号的个数，num(')')为右括号的个数，构建过程两个的关系必须满足num('(') >= num(')')，构建完成时num('(') = num(')')
+ * 给定有序对ordered-pair：p(i,j)，代表合法的括号排列个数，i和j分别为num('('),num(')')，并满足上述关系式。
+ * 有
+ * p(i,j)=0，当i < j
+ * p(i,j)=p(i,j-1)，当i=j
+ * p(i,j)=p(i-1,j) + p(i,j-1)，当i>j
+ * 初始条件p(0,0)=1
+ * 提示：列出二维表格，将会很容易观察，给与更多启示
  *
  * 2. 算法范式：backtracking
  * 3. 算法：backtracking总是跟深度优先遍历紧密联系，或者说backtracking的执行上都是使用深度优先的方式。从上面决策树建模，特别是模型（2）
@@ -55,6 +66,30 @@ import java.util.Set;
  * @since DiscreteMathematics on  09/08/2017
  */
 public class GenerateParentheses {
+
+    //-------------------------dynamic programming--------------------------------------
+    // 若是使用dp来解这个字符串，那么中间需要的临时变量有点多，这里变换下，使用dp来求有多少个合法的括号字符串吧
+    public int generateParenthesisDP(int n) {
+        int[][] dp = new int[n + 1][n + 1];
+        dp[0][0] = 1;
+        for(int i = 1; i <= n; i++) {
+            for (int j = 0; j <= i; j++) {
+                if(i == j) {
+                    dp[i][j] = (dp[i][j - 1]);
+                } else if (i > j){
+                    dp[i][j] = dp[i - 1][j] + (j != 0? dp[i][j - 1]: 0);
+                }
+            }
+        }
+
+        return dp[n][n];
+    }
+
+    public static void main(String[] args) {
+        int i = new GenerateParentheses().generateParenthesisDP(3);
+        System.out.println(i);
+    }
+    //-------------------------dynamic programming--------------------------------------
 
     public List<String> generateParenthesis(int n) {
 

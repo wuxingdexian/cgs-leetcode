@@ -52,11 +52,18 @@ import java.util.Arrays;
  *
  * TODO 对比：“239. Sliding Window Maximum”是找最值问题，可以从集合+函数的角度来思考，但是复杂度就会比较高了。
  *
- * 排序/组合问题
+ * 排列/序列问题
  * 1）可以多想想set+function，这是根本。如“ValidAnagram”和“LongestPalindromicSubstring”，通过function将set空间转化，将permutation和combination问题的n平方或多次方的复杂度降低到log(n)、n、n*long(n)复杂度。
  * 2）和关系类题目一样，同样要多利用已经计算过的结果和值，需要借助合适的数据结构来保存或缓存想要的值。这样对算法有很大改善，当然需要一些灵活巧妙的设计，如“LongestPalindromicSubstring”的马拉车算法。
  * 3）数据整合，将相同的数/字符/元素归类合并，如hashMap，将相同元素映射到同一个值；如trie，将相同的字符串/数字串映射到同一个路径/值等。这么做的好处很多，可以压缩空间，压缩路径，集合降维，快速查找等。这就要对数据结构有比较深的理解和应用
+ *  a）比如树结构转换为字符串序列结构，然后使用字符串的相关function/技术来计算。如《cracking the coding interview》8.4章节的4.5，求一个树是否是另一个树的子树，
+ *      遍历后得到字符串，然后使用后缀树限行时间匹配；
+ *  b）网上谷歌面试题目，找一个数组中连续的子数组的元素和的平均数是某一个给定的数。这题和LeetCode的题目有花呗，如果不预处理，照搬原题的recurrence relation进行dynamic programming，
+ *      并不会降低复杂度~。~  此时应该预处理：将数组所有的值都减去平均数，然后原题等价于求“在处理后的数组中找连续子数组的和等于0”。
+ *      为什么？因为，假设(a[1]+a[2]+...+a[n])/n=average，每个a[i]都减去average后，(a[1]-average)+(a[2]-average)+...+(a[n]-average)=n*average-n*average=0,
+ *      从而将函数中的变量n移去，避免对每次迭代时都要考虑这个n值。
  *
+ * 提示：找function时，列出一维数组或二维数组（表格），对在建立recurrence relation做DP是比较有用，如硬币置换《cracking the coding interview》。
  * 注意：当function不是单射时，要做额外校验和补偿措施。如“FindAllAnagramsInAString”
  *
  * 7. jdk知识：
@@ -99,5 +106,6 @@ public class ValidAnagram {
             tSum += t.charAt(i);
         }
         return sSum == tSum;
+
     }
 }

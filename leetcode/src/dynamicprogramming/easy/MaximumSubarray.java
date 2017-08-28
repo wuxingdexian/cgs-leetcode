@@ -1,5 +1,7 @@
 package dynamicprogramming.easy;
 
+import dynamicprogramming.medium.MaximumProductSubarray;
+
 /**
  * <p>
  * 背景描述：
@@ -9,11 +11,32 @@ package dynamicprogramming.easy;
  * For example, given the array [-2,1,-3,4,-1,2,1,-5,4],
  * the contiguous subarray [4,-1,2,1] has the largest sum = 6.
  * <p>
+ * 0. 本质：组合
  * 1. 建模：
+ * 模型一
  * （1）两次recurrence relation：
  *  MaxSum_k=max(MaxSum_k-1, Sum(x,k)), x={0,1,...,k};
  *  Sum(x,k)=Sum_k - Sum_x;Sum(x,k)的求取参考{@link NumArray}
  * （2）Sum(x,k)参考{@link NumArray}
+ *
+ * 模型二
+ * 上面的模型一虽然使用了动态规划，但是面对连续子数组使得和最大这个限制条件，抵消了动态规划{@link NumArray}的性能优势。时间复杂度为O(n*n)
+ * 所以应该另寻他路。TODO 从set+function的角度思考，题设要满足两个性质：（1）连续性；（2）和非递减；因为要使得连续子数组最大值，那这个连续子数组的和在动态变动过程中是递增的。
+ * TODO 从上面的情况分析来看，已经找到了两个关键性质，那么影响这个关键点的就是负数了。。。。
+ * 找到function：假设a[i]为负数，a[i-1]和a[i+1]为非负数，若sum(a[i-1] + a[i] + a[i+1]) > a[i-1]并且sum(a[i-1] + a[i] + a[i+1]) > a[i+1]，
+ * 则称a[i]为好负数good negative，不影响连续性和非递减性；否则为坏负数，连续中断。
+ *
+ * 在一个序列中会有很多段连续的负数和连续的非负数，那此时就要把负数和非负数进行规整，得到多个片段，此时可以做预处理，将连续的负数累加得到一个负数，将连续的非负数累加得到一个非负数，
+ * 然后在负数和非负数相互间隔的情况考虑，此时已经转换为上面的模型了。
+ *
+ * 这个问题本质上和{@link MaximumProductSubarray}分析的角度是类似的   TODO 组合题目，找到关键性质。找出影响性质的点；找出性质相关的函数；尝试映射空间、数据转换；尝试能想到的数据结构、排序等技巧。
+ * TODO 根本还是分析关键点，找到性质，建模。
+ *
+ * 至此，可以遍历解决，也可以分治法解决，分治法感觉高端些~。~
+ *
+ * 模型三
+ * // TODO: 27/08/2017  《cracking the coding interview》的方法更简单~~~
+ *
  * 2. 算法范式：dynamic programming
  * 3. 算法：bottom-up
  * 4. 数据结构：Sum(x,k)两个数组的function映射，参考{@link NumArray}
