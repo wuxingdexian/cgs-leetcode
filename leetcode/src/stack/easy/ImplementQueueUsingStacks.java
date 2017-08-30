@@ -1,5 +1,7 @@
 package stack.easy;
 
+import java.util.Stack;
+
 /**
  * <p>
  * 背景描述：
@@ -31,60 +33,52 @@ package stack.easy;
  * @since cgs-leetcode on  14/08/2017
  */
 public class ImplementQueueUsingStacks {
-    //     int[0] 用作哨兵
-    int[] stack;
-    int index;
+    Stack<Integer> mainStack;
+    Stack<Integer> slaveStack;
     /** Initialize your data structure here. */
+//    public MyQueue() {
     public ImplementQueueUsingStacks() {
-        stack = new int[10000];
-        index = 0;
+        mainStack = new Stack();
+        slaveStack = new Stack();
     }
 
     /** Push element x to the back of queue. */
     public void push(int x) {
-        stack[++index] = x;
+        if(!slaveStack.isEmpty()) {
+            pushAll(slaveStack, mainStack);
+        }
+        mainStack.push(x);
     }
 
     /** Removes the element from in front of queue and returns that element. */
     public int pop() {
-        return change();
-    }
-
-    private int change() {
-        ImplementQueueUsingStacks tmpQueue = new ImplementQueueUsingStacks();
-        while(index > 0) {
-            tmpQueue.push(stackPop());
+        if(!slaveStack.isEmpty()) {
+            return slaveStack.pop();
+        } else {
+            pushAll(mainStack, slaveStack);
+            return slaveStack.pop();
         }
-
-        int popValue = tmpQueue.stackPop();
-        while(tmpQueue.getIndex() > 0) {
-            push(tmpQueue.stackPop());
-        }
-        return popValue;
-    }
-
-    public int stackPop() {
-        if(index > 1) {
-            return stack[index--];
-        }
-        return Integer.MIN_VALUE;
     }
 
     /** Get the front element. */
     public int peek() {
-        return stack[index];
+        if(!slaveStack.isEmpty()) {
+            return slaveStack.peek();
+        } else {
+            pushAll(mainStack, slaveStack);
+            return slaveStack.peek();
+        }
     }
 
     /** Returns whether the queue is empty. */
     public boolean empty() {
-        return index == 0;
+        return mainStack.isEmpty() && slaveStack.isEmpty();
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public int getIndex() {
-        return this.index;
+    // to delay moving frequently
+    private void pushAll(Stack<Integer> fromStack, Stack<Integer> toStack) {
+        while(!fromStack.isEmpty()) {
+            toStack.push(fromStack.pop());
+        }
     }
 }

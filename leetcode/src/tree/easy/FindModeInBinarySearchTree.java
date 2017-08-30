@@ -2,9 +2,7 @@ package tree.easy;
 
 import depthfirstsearch.TreeNode;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -37,16 +35,22 @@ import java.util.Set;
  * 众数（Mode）是统计学名词，在统计分布上具有明显集中趋势点的数值，代表数据的一般水平（众数可以不存在或多于一个）。
  * 修正定义：是一组数据中出现次数最多的数值，叫众数，有时众数在一组数中有好几个。用M表示。 理性理解：简单的说，就是一组数据中占比例最多的那个数。
  *
- * （1）相等的值放在同一个集合中
+ * 二叉搜索树
  *
  * 2. 算法范式：
  * （2）backtracking
  * 3. 算法：
- * （1）hashMap，相同的值放在同一个key。
- * （2）dfs，
+ * 算法一：
+ * （1）hashMap，相同的值放在同一个key。 因为借助额外数组，不太可取
+ * 算法二：
+ * （2）dfs，设定结果集合
  *      1）找左子树和节点相同的数的个数；l
  *      2）找右子树和节点相同的数的个数；r
- *      3）如果l+r+1大于结果数组的最大值，则结果数组清零，并把给数放进去。
+ *      3）如果l+r+1大于当前众数的个数，则结果集合清零，并把给数放进去；若等于则放入结果集合
+ *
+ * 算法三：
+ * 因为是二叉搜索树，将其线索化，然后从左树最左节点开始遍历一遍即可。
+ *
  * 4. 数据结构：
  * 5. 改进：
  * 6. 启发：
@@ -61,51 +65,48 @@ import java.util.Set;
  * @since cgs-leetcode on  26/08/2017
  */
 public class FindModeInBinarySearchTree {
+    int maxCounter = 0;
     public int[] findMode(TreeNode root) {
         if(root == null) {
             return new int[0];
         }
-        Mode basiMode = new Mode(root.val, 1);
-        basiMode = findMode(root, basiMode, new Mode(root.val, 1));
-        int[] solutions = new int[1];
-        solutions[0] = basiMode.val;
-        return solutions;
-    }
-    Mode findMode(TreeNode root, Mode basicMode, Mode mode) {
-        dfs(root, mode);
-        if(mode.counter > basicMode.counter) {
-            basicMode = mode;
-        }
-        if(root != null && root.left != null) {
-            basicMode = findMode(root.left, basicMode, new Mode(root.left.val, 1));
-        }
-        if(root != null && root.right != null) {
-            basicMode = findMode(root.right, basicMode, new Mode(root.right.val, 1));
-        }
-        return basicMode;
-    }
 
-
-    void dfs(TreeNode root, Mode mode) {
+        List<Integer> solutions = new ArrayList();
+        findMode(root, solutions);
+        return formatSolutions(solutions);
+    }
+    void findMode(TreeNode root, List<Integer> solutions) {
         if(root == null) {
             return;
         }
-        if(root.val == mode.val) {
-            mode.counter++;
+
+        int counter = dfsCounter(root, root.val);
+        if(counter > maxCounter) {
+            solutions.clear();
+            solutions.add(root.val);
+            maxCounter = counter;
+        } else if(counter == maxCounter) {
+            solutions.add(root.val);
         }
 
-        dfs(root.left, mode);
-        dfs(root.right, mode);
-
+        findMode(root.left, solutions);
+        findMode(root.right, solutions);
     }
 
-    class Mode{
-        int val;
-        int counter;
-        Mode(int val, int counter) {
-            this.val = val;
-            this.counter = counter;
+    int dfsCounter(TreeNode root, int value) {
+        if(root == null) {
+            return 0;
         }
+
+        return dfsCounter(root.left, value) + dfsCounter(root.right, value) + (root.val == value? 1: 0);
+    }
+
+    int[] formatSolutions(List<Integer> solutions) {
+        int[] solutionArray = new int[solutions.size()];
+        for(int i = 0; i < solutions.size(); i++) {
+            solutionArray[i] = solutions.get(i);
+        }
+        return solutionArray;
     }
 
     public static void main(String[] args) {
@@ -117,10 +118,10 @@ public class FindModeInBinarySearchTree {
 
     TreeNode build() {
         TreeNode root = new TreeNode(1);
-        TreeNode left = new TreeNode(2);
+//        TreeNode left = new TreeNode(2);
         TreeNode right = new TreeNode(2);
         root.right = right;
-        root.right.right = left;
+//        root.right.right = left;
         return root;
     }
 }
