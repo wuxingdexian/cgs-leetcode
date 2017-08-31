@@ -20,7 +20,7 @@ import dynamicprogramming.medium.MaximumProductSubarray;
  * （2）Sum(x,k)参考{@link NumArray}
  *
  * 模型二
- * 上面的模型一虽然使用了动态规划，但是面对连续子数组使得和最大这个限制条件，抵消了动态规划{@link NumArray}的性能优势。时间复杂度为O(n*n)
+ * 上面的模型一虽然使用了动态规划，但是面对连续子数组使得和最大这个限制条件，在动态规划结果的基础上还需要额外计算一次，这抵消了动态规划{@link NumArray}的性能优势。时间复杂度为O(n*n)
  * 所以应该另寻他路。TODO 从set+function的角度思考，题设要满足两个性质：（1）连续性；（2）和非递减；因为要使得连续子数组最大值，那这个连续子数组的和在动态变动过程中是递增的。
  * TODO 从上面的情况分析来看，已经找到了两个关键性质，那么影响这个关键点的就是负数了。。。。
  * 找到function：假设a[i]为负数，a[i-1]和a[i+1]为非负数，若sum(a[i-1] + a[i] + a[i+1]) > a[i-1]并且sum(a[i-1] + a[i] + a[i+1]) > a[i+1]，
@@ -36,6 +36,11 @@ import dynamicprogramming.medium.MaximumProductSubarray;
  *
  * 模型三
  * // TODO: 27/08/2017  《cracking the coding interview》的方法更简单~~~
+ *
+ *
+ * 提示：
+ * （1）动态规划方面：该题目和在矩阵中求子矩阵使得和最大是一个概念，一个是二维、一个是三维。都可以利用动态规划求解，只是动态规划得到的只是中间结果，还需要额外计算。
+ * （2）序列连续、和非递减性质方面：该题目和在矩阵中求子矩阵使得和最大是一个概念，都有一个比动态规划更优的解。可以把复杂度降低一个数量级。
  *
  * 2. 算法范式：dynamic programming
  * 3. 算法：bottom-up
