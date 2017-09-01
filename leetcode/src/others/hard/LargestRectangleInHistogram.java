@@ -175,9 +175,38 @@ public class LargestRectangleInHistogram {
     }
     //----------------------------------standard--------------------------
 
+
+    //---------------------------------练习栈的使用------------------------
+    public static int largestRectangleAreaStack(int[] height) {
+        if (null == height || height.length == 0) {
+            return 0;
+        }
+        int largestArea = Integer.MIN_VALUE;
+        Stack<Integer/*index*/> positionStack = new Stack<>();
+        for (int i = 0; i < height.length; i++) {
+            largestArea = Math.max(largestArea, height[i]);
+            while (!positionStack.isEmpty() && height[positionStack.peek()] > height[i]) {
+                int position = positionStack.pop();
+                largestArea = Math.max(largestArea, height[position] * ((positionStack.isEmpty()? i: i - positionStack.peek() - 1)));
+            }
+            positionStack.push(i);
+        }
+
+        while (!positionStack.isEmpty()) {
+            int position = positionStack.pop();
+            largestArea = Math.max(largestArea, height[position] * (positionStack.isEmpty()? height.length: height.length - positionStack.peek() - 1));
+        }
+        return largestArea;
+    }
+    //---------------------------------练习栈的使用------------------------
+
     public static void main(String[] args) {
         int[] heights = {2,1,5,6,2,3};
-        int i = new LargestRectangleInHistogram().largestRectangleAreaStandard(heights);
+//        int[] heights = {1,1,1,1,2,2};
+//        int[] heights = {5,4,1,2};
+//        int[] heights = {4,2,0,3,2,5};
+//        int[] heights = {3,6,5,7,4,8,1,0};
+        int i = new LargestRectangleInHistogram().largestRectangleAreaStack(heights);
         System.out.println(i);
     }
 }
