@@ -80,4 +80,23 @@ public class IncreasingTripletSubsequence {
         }
         return false;
     }
+
+    // patiency sort第一阶段的变种
+    public boolean increasingTripletImprovement(int[] nums) {
+        int minMal = Integer.MAX_VALUE;
+        int middle = Integer.MAX_VALUE;
+
+        for(int num: nums) {
+            // compare from left-most
+            if(num <= minMal) {
+                minMal = num;
+            } else if(num <= middle) {
+                middle = num;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
