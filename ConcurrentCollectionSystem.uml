@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>java.util.concurrent.ConcurrentHashMap</OriginalElement>
+  <nodes>
+    <node x="0.0" y="240.0">java.lang.Cloneable</node>
+    <node x="524.875" y="320.0">java.util.concurrent.locks.ReentrantLock</node>
+    <node x="550.3333333333334" y="400.0">java.util.concurrent.ConcurrentHashMap.Segment</node>
+    <node x="236.625" y="80.0">java.util.Collection</node>
+    <node x="919.5833333333333" y="320.0">java.util.concurrent.ConcurrentNavigableMap</node>
+    <node x="299.125" y="240.0">java.util.AbstractSet</node>
+    <node x="693.3901515151515" y="320.0">java.util.concurrent.ConcurrentHashMap</node>
+    <node x="394.125" y="160.0">java.util.Set</node>
+    <node x="314.125" y="320.0">java.util.concurrent.CopyOnWriteArraySet</node>
+    <node x="244.625" y="0.0">java.lang.Iterable</node>
+    <node x="451.625" y="240.0">java.io.Serializable</node>
+    <node x="866.8901515151515" y="240.0">java.util.concurrent.ConcurrentMap</node>
+    <node x="135.125" y="240.0">java.util.RandomAccess</node>
+    <node x="589.625" y="240.0">java.util.concurrent.locks.Lock</node>
+    <node x="84.5" y="160.0">java.util.List</node>
+    <node x="707.217803030303" y="240.0">java.util.AbstractMap</node>
+    <node x="210.125" y="160.0">java.util.AbstractCollection</node>
+    <node x="882.5" y="160.0">java.util.Map</node>
+    <node x="79.83333333333337" y="320.0">java.util.concurrent.CopyOnWriteArrayList</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="java.util.concurrent.ConcurrentNavigableMap" target="java.util.Map">
+      <point x="51.5" y="-15.0" />
+      <point x="1074.0833333333333" y="300.0" />
+      <point x="1033.0833333333335" y="300.0" />
+      <point x="1033.0833333333335" y="215.0" />
+      <point x="945.8333333333334" y="215.0" />
+      <point x="25.33333333333337" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.CopyOnWriteArrayList" target="java.util.List">
+      <point x="-23.5" y="-15.0" />
+      <point x="150.33333333333337" y="300.0" />
+      <point x="120.5" y="300.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentMap" target="java.util.Map">
+      <point x="0.0" y="-15.0" />
+      <point x="939.8901515151515" y="215.0" />
+      <point x="920.5" y="215.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.CopyOnWriteArrayList" target="java.util.RandomAccess">
+      <point x="23.5" y="-15.0" />
+      <point x="197.33333333333337" y="300.0" />
+      <point x="207.125" y="300.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.CopyOnWriteArraySet" target="java.io.Serializable">
+      <point x="46.5" y="-15.0" />
+      <point x="453.625" y="300.0" />
+      <point x="487.025" y="300.0" />
+      <point x="-23.600000000000023" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.CopyOnWriteArraySet" target="java.util.AbstractSet">
+      <point x="-46.5" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentHashMap.Segment" target="java.util.concurrent.ConcurrentHashMap">
+      <point x="34.66666666666663" y="-15.0" />
+      <point x="637.0" y="375.0" />
+      <point x="782.3901515151515" y="375.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.CopyOnWriteArrayList" target="java.lang.Cloneable">
+      <point x="-70.5" y="-15.0" />
+      <point x="103.33333333333337" y="300.0" />
+      <point x="55.0" y="300.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.locks.ReentrantLock" target="java.io.Serializable">
+      <point x="-34.75" y="-15.0" />
+      <point x="559.625" y="300.0" />
+      <point x="534.225" y="300.0" />
+      <point x="23.600000000000023" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentHashMap.Segment" target="java.io.Serializable">
+      <point x="-34.66666666666663" y="-15.0" />
+      <point x="567.6666666666667" y="375.0" />
+      <point x="510.625" y="375.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.Set" target="java.util.Collection">
+      <point x="0.0" y="-15.0" />
+      <point x="429.125" y="135.0" />
+      <point x="329.125" y="135.0" />
+      <point x="37.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentHashMap" target="java.util.concurrent.ConcurrentMap">
+      <point x="59.33333333333337" y="-15.0" />
+      <point x="841.723484848485" y="300.0" />
+      <point x="903.3901515151515" y="300.0" />
+      <point x="-36.5" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentHashMap" target="java.io.Serializable">
+      <point x="-59.33333333333337" y="-15.0" />
+      <point x="723.0568181818182" y="290.0" />
+      <point x="557.825" y="290.0" />
+      <point x="47.200000000000045" y="15.0" />
+    </edge>
+    <edge source="java.util.AbstractMap" target="java.util.Map">
+      <point x="0.0" y="-15.0" />
+      <point x="771.717803030303" y="215.0" />
+      <point x="895.1666666666666" y="215.0" />
+      <point x="-25.33333333333337" y="15.0" />
+    </edge>
+    <edge source="java.util.List" target="java.util.Collection">
+      <point x="0.0" y="-15.0" />
+      <point x="120.5" y="135.0" />
+      <point x="255.125" y="135.0" />
+      <point x="-37.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.locks.ReentrantLock" target="java.util.concurrent.locks.Lock">
+      <point x="34.75" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentHashMap" target="java.util.AbstractMap">
+      <point x="0.0" y="-15.0" />
+      <point x="782.3901515151515" y="300.0" />
+      <point x="771.717803030303" y="300.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.Collection" target="java.lang.Iterable">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.CopyOnWriteArrayList" target="java.io.Serializable">
+      <point x="70.5" y="-15.0" />
+      <point x="244.33333333333337" y="290.0" />
+      <point x="463.425" y="290.0" />
+      <point x="-47.19999999999999" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentHashMap.Segment" target="java.util.concurrent.locks.ReentrantLock">
+      <point x="0.0" y="-15.0" />
+      <point x="602.3333333333334" y="375.0" />
+      <point x="594.375" y="375.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.AbstractSet" target="java.util.Set">
+      <point x="30.75" y="-15.0" />
+      <point x="391.375" y="215.0" />
+      <point x="429.125" y="215.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ConcurrentNavigableMap" target="java.util.concurrent.ConcurrentMap">
+      <point x="-51.5" y="-15.0" />
+      <point x="971.0833333333333" y="300.0" />
+      <point x="976.3901515151515" y="300.0" />
+      <point x="36.5" y="15.0" />
+    </edge>
+    <edge source="java.util.AbstractCollection" target="java.util.Collection">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="java.util.AbstractSet" target="java.util.AbstractCollection">
+      <point x="-30.75" y="-15.0" />
+      <point x="329.875" y="215.0" />
+      <point x="292.125" y="215.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="360.5" y="215.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
