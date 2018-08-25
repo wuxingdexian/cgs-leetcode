@@ -1,5 +1,10 @@
 package others.medium;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * <p>
  * 背景描述：
@@ -99,5 +104,42 @@ public class JumpGame {
     }
 
     // TODO: 22/10/2017 可以尝试使用backtracking方式实现
+
+
+    public static void main(String[] args) {
+        List<String> stringList = Arrays.asList("0", "1", "_1", "_2", "_a", "_abc", "_a_a", "&", "A", "~", "a", "好", "人", "。");
+        stringList.sort(String::compareTo);
+        System.out.println(stringList);
+
+        HashMap<String, AtomicInteger> integerHashMap1 = new HashMap<>();
+        integerHashMap1.put("a", new AtomicInteger(0));
+        integerHashMap1.put("b", new AtomicInteger(0));
+        integerHashMap1.put("c", new AtomicInteger(0));
+
+        System.out.println(integerHashMap1);
+        integerHashMap1.get("a").addAndGet(2);
+        System.out.println(integerHashMap1);
+
+        HashMap<String, AtomicInteger> integerHashMap2 = new HashMap<>(integerHashMap1);
+        System.out.println(integerHashMap2);
+        integerHashMap2.get("a").incrementAndGet();
+        System.out.println(integerHashMap2);
+        System.out.println();
+        System.out.println(integerHashMap1);
+
+        HashMap<String, AtomicInteger> clone = (HashMap<String, AtomicInteger>) integerHashMap1.clone();
+        System.out.println(clone);
+        clone.get("a").incrementAndGet();
+        System.out.println(clone);
+        System.out.println();
+        System.out.println(integerHashMap1);
+        System.out.println();
+        System.out.println(integerHashMap2);
+
+
+        Object object = new AtomicInteger(0);
+
+
+    }
 
 }
