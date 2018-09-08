@@ -98,6 +98,7 @@ public class GrayCode {
     }
 
     // bit 操作 格雷码公式
+    // https://zhuanlan.zhihu.com/p/29254973 这个描述更清楚
     public List<Integer> grayCodeStandard(int n) {
         int counter = (int)Math.pow(2, n);
         List<Integer> solution = new ArrayList<>();

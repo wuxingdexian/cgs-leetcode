@@ -1,5 +1,6 @@
 package others.easy;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import sort.easy.ValidAnagram;
 
 import java.util.*;
@@ -86,6 +87,22 @@ import java.util.*;
  * FIXME（1）这个滑动窗口不是严格意义的窗口，两个指针head和tail的区域使得窗口长度变动。
  * FIXME（2）函数不是单射，原作者使用“ 1）length(head-tail)是否等于length(t)；2）counter是否等于0；”两个来辅助条件来判断结论是否成立。 速度很快 good job
  *
+ * 算法3 2018.8.28
+ * 和算法1类似，本质上也是函数映射关系。
+ * 本次直接初始化目标串的Map，<character, count>键值对，滑动窗口后对character的count进行加减，当所有character的count都为0，则找到一个。
+ * 为了记录哪些character已经是count为0。
+ * （1）队列：进行滑动窗口控制
+ * （2）利用set数据结构：虽然可以在for训练外使用int变量，但是控制起来有点麻烦，需要考虑相同字符是否已经被操作过，简单方便。
+ *
+ * 如果都是ascii码，可以使用int数组做map，增加一个计数器，可以提高性能
+ * 举例 s:"bbbca", p:"abc"
+ *          a  b  c
+ * 初始化    1  1  1
+ * b        1  0  1
+ * b        1 -1  1
+ * b        1 -2  1
+ * c        1 -1  0   窗口为3，第一个b 出队
+ * a        0  0  0   窗口为3，第二个b 出队，滑动窗口所有元素为0，找到
  *
  * 4. 数据结构：
  * 有序对ordered-pair(t.charAt(i), 1)，使用hashMap存储
@@ -102,6 +119,64 @@ import java.util.*;
  * @since cgs-leetcode on  22/08/2017
  */
 public class FindAllAnagramsInAString {
+
+    /**
+     * 这个滑动窗口感觉更合理，对于ASCII码，要追求性能，可以用int[]数组做map，增加一个计数器
+     * @param s
+     * @param p
+     * @return
+     */
+    public List<Integer> findAnagrams3(String s, String p) {
+        if (null == p || p.length() == 0 || null == s || s.length() < p.length()) {
+            return new ArrayList<>();
+        }
+
+        Map<Character, Integer> char2countMap = new HashMap<>();
+        for (char c: p.toCharArray()) {
+            Integer count = char2countMap.getOrDefault(c, 0);
+            count++;
+            char2countMap.put(c, count);
+        }
+
+        List<Integer> solution = new ArrayList<>();
+        // sliding windows
+        LinkedList<Character> windowList = new LinkedList<>();
+        Set<Character> zeroCharSet = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            // 维护滑动窗口内的字符和Map的映射关系
+            if (windowList.size() >= p.length()) {
+                Character character = windowList.removeFirst();
+                if (char2countMap.containsKey(character)) {
+                    int count = char2countMap.get(character);
+                    count++;
+                    char2countMap.put(character, count);
+                    if (count == 0) {
+                        zeroCharSet.add(character);
+                    } else {
+                        zeroCharSet.remove(character);
+                    }
+                }
+            }
+            windowList.addLast(s.charAt(i));
+
+            if (char2countMap.containsKey(s.charAt(i))) {
+                Integer count = char2countMap.get(s.charAt(i));
+                count--;
+                char2countMap.put(s.charAt(i), count);
+                if (count == 0) {
+                    zeroCharSet.add(s.charAt(i));
+                } else {
+                    zeroCharSet.remove(s.charAt(i));
+                }
+            }
+
+            if (zeroCharSet.size() == char2countMap.size()) {
+                solution.add(i - p.length() + 1);
+            }
+        }
+        return solution;
+    }
+
 
     // 根据上面模型2编码 感觉还有有点绕，不太好理解
     public List<Integer> findAnagrams2(String s, String p) {
@@ -229,7 +304,9 @@ public class FindAllAnagramsInAString {
     }
 
     public static void main(String[] args) {
-        List<Integer> anagrams = new FindAllAnagramsInAString().findAnagrams2("cbaebabacdbca", "abc");
+//        List<Integer> anagrams = new FindAllAnagramsInAString().findAnagrams3("cbaebabacdbcabcab", "abc");
+        List<Integer> anagrams = new FindAllAnagramsInAString().findAnagrams3("aaaabaaaa", "aaaa");
+//        List<Integer> anagrams = new FindAllAnagramsInAString().findAnagrams3("bbbca", "abc");
         System.out.println(anagrams);
     }
 }

@@ -30,6 +30,8 @@ import java.util.Set;
  *
  * （2）dynamic programming
  * 尽然找到动态规划的子问题。
+ * 参考
+ * http://www.zrzahid.com/longest-palindromic-substring-in-on2-time/
  *
  * （3）马拉车算法，利用对称性，从数学角度说明，很🐂B
  * http://www.zrzahid.com/longest-palindromic-substring-in-linear-time/ 从数学的角度阐明了该算法。很厉害，比中文博客一堆描述最后还不懂，厉害。可见数学功底
@@ -74,7 +76,45 @@ import java.util.Set;
  * @since cgs-leetcode on  20/08/2017
  */
 public class LongestPalindromicSubstring {
-    
+
+
+    /**
+     * 参考 TODO 修复
+     * http://www.zrzahid.com/longest-palindromic-substring-in-on2-time/
+     * @param in
+     * @return
+     */
+    public static String longestPalindromeDP(final String in) {
+        if (null == in || in.length() == 0) {
+            return in;
+        }
+        // 记录每个起始index 到 目标 index的最大长度
+        int[][] dp = new int[in.length()][in.length()];
+        // 初始化都为1
+        for (int i = 0; i < in.length(); i++) {
+            for (int j = 0; j < in.length(); j++) {
+            dp[i][j] = 1;
+            }
+        }
+
+        int maxLength = 1;
+        int startIndex = 0;
+        for (int end = 1; end < in.length(); end++) {
+            for (int start = 0; start < end; start++) {
+                if (in.charAt(start) == in.charAt(end)) {
+                    dp[start][end] = 2 + (start+1 <= end-1? dp[start+1][end-1]: 0);
+                } else {
+                    dp[start][end] = Math.max(dp[start+1][end], dp[start][end-1]);
+                }
+                if (dp[start][end] > maxLength) {
+                    startIndex = start;
+                    maxLength = dp[start][end];
+                }
+            }
+        }
+
+        return in.substring(startIndex, startIndex + maxLength);
+    }
     
     //------------------------参考说明------------------------
     // TODO: 20/08/2017 http://www.zrzahid.com/longest-palindromic-substring-in-linear-time/ 从数学的角度阐明了该算法。很厉害，比中文博客一堆描述最后还不懂，厉害。可见数学功底
@@ -246,7 +286,7 @@ public class LongestPalindromicSubstring {
     //-------------------------------独自实现------------------------
 
     public static void main(String[] args) {
-        String babad = new LongestPalindromicSubstring().longestPalindrome("cbbbd");
+        String babad = new LongestPalindromicSubstring().longestPalindromeDP("abcda");
         System.out.println(babad);
     }
 }

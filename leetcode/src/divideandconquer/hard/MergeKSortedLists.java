@@ -41,6 +41,7 @@ public class MergeKSortedLists {
             return lists[start];
         }
 
+        // 31/08/2018 递归，站在高处抽象，将多化为1，如这里就简单化为左右两边；DP也是
         int middle = (start + end) >>> 1;
         ListNode left = merge(lists, start, middle);
         ListNode right = merge(lists, middle + 1, end);

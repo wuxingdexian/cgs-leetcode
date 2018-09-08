@@ -55,6 +55,22 @@ import java.util.Map;
  * @since cgs-leetcode on  30/08/2017
  */
 public class LowestCommonAncestorOfABinaryTree {
+
+    /**
+     * 这个答案NB，简洁
+     * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/discuss/65225/4-lines-C++JavaPythonRuby
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) return root;
+        TreeNode left = lowestCommonAncestor1(root.left, p, q);
+        TreeNode right = lowestCommonAncestor1(root.right, p, q);
+        return left == null ? right : right == null ? left : root;
+    }
+
     // cache dynamic programming
     Map<TreeNode, TreeNode> cache = new HashMap();
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
