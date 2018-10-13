@@ -1,5 +1,7 @@
 package string.medium;
 
+import dynamicprogramming.medium.PalindromicSubstrings;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -76,6 +78,50 @@ import java.util.Set;
  * @since cgs-leetcode on  20/08/2017
  */
 public class LongestPalindromicSubstring {
+
+    /**
+     * 参考{@link PalindromicSubstrings}建模，使用DP解实现
+     * @author changgan on 11/10/2018
+     * @param in
+     * @return
+     */
+    public static String longestPalindromeDPNew(final String in) {
+        if(in == null || in.length() == 0) {
+            return in;
+        }
+        char[] chars = in.toCharArray();
+
+        int[][] solutions = new int[in.length()][in.length()];
+
+        for(int stepSize=0; stepSize<in.length();stepSize++) {
+            for(int i=0;i<in.length()-stepSize;i++) {
+
+                if(chars[i]==chars[i+stepSize]) {
+                    if(i+1 > i+stepSize-1) {
+                        solutions[i][i+stepSize]=1;
+                    } else if(solutions[i+1][i+stepSize-1]==1) {
+                        solutions[i][i+stepSize]=1;
+                    } else {
+                        solutions[i][i+stepSize]=0;
+                    }
+                } else {
+                    solutions[i][i+stepSize]=0;
+                }
+            }
+        }
+
+        int startIndex = 0, endIndex = 0, longestLength = 0;
+        for(int i = 0; i < in.length(); i++) {
+            for(int j = i; j < in.length(); j++) {
+                if(solutions[i][j] == 1 && j+1-i >= longestLength) {
+                    longestLength = j-i+1;
+                    startIndex = i;
+                    endIndex = j+1;
+                }
+            }
+        }
+        return in.substring(startIndex, endIndex);
+    }
 
 
     /**
