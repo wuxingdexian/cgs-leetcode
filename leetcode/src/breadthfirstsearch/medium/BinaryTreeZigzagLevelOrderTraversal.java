@@ -1,5 +1,12 @@
 package breadthfirstsearch.medium;
 
+import depthfirstsearch.TreeNode;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * <p>
  * 背景描述：
@@ -42,4 +49,35 @@ package breadthfirstsearch.medium;
  * @since cgs-leetcode on  17/08/2017
  */
 public class BinaryTreeZigzagLevelOrderTraversal {
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+
+        List<List<Integer>> solutionList = new LinkedList<>();
+
+        if (root == null) return solutionList;
+
+        traverse(1, Arrays.asList(root), solutionList);
+
+        return solutionList;
+    }
+
+    void traverse(int level, List<TreeNode> currentNodes, List<List<Integer>> solutionList) {
+        if (currentNodes == null || currentNodes.isEmpty()) return;
+
+        LinkedList<Integer> solution = new LinkedList<>();
+        LinkedList<TreeNode> nextLevelNodes = new LinkedList<>();
+
+        for (TreeNode node: currentNodes) {
+            if ((level & 1) == 1) solution.addLast(node.val);
+            else solution.addFirst(node.val);
+
+            if (null != node.left) nextLevelNodes.addLast(node.left);
+            if (null != node.right) nextLevelNodes.addLast(node.right);
+        }
+
+        solutionList.add(solution);
+        traverse(level+1, nextLevelNodes, solutionList);
+    }
+
+
 }

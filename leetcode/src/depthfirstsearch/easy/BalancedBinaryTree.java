@@ -58,4 +58,33 @@ public class BalancedBinaryTree {
             return 0;
         }
     }
+
+    /**
+     * 重复子问题，优化
+     *
+     * @param root
+     * @return
+     */
+    private Pair isBalancedOpt(TreeNode root) {
+        if (root == null) return new Pair(true, 0);
+
+        Pair balancedLeft = isBalancedOpt(root.left);
+        Pair balancedRight = isBalancedOpt(root.right);
+
+        if (!balancedLeft.balance || !balancedRight.balance) return new Pair(false, -1);
+
+        if (Math.abs(balancedLeft.level - balancedRight.level) <= 1)
+            return new Pair(true, Math.max(balancedLeft.level, balancedRight.level) + 1);
+        else return new Pair(false, -1);
+    }
+
+    class Pair {
+        boolean balance;
+        int level;
+
+        public Pair(boolean balance, int level) {
+            this.balance = balance;
+            this.level = level;
+        }
+    }
 }

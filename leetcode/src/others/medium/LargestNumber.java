@@ -62,5 +62,7 @@ public class LargestNumber {
         int[] nums = {45,421,42,423,4,43};
         String s = new LargestNumber().largestNumber(nums);
         System.out.println(s);
+
+        System.out.println("3".compareTo("10"));
     }
 }

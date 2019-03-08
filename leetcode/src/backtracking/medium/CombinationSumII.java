@@ -55,7 +55,7 @@ public class CombinationSumII {
         }
         if(tmpSum == target) {
             if(solutions.indexOf(numberList) < 0) {
-                solutions.add(new ArrayList(numberList));
+                solutions.add(new ArrayList<>(numberList));
             }
             return;
         }

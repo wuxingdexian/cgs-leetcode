@@ -57,4 +57,6 @@ public class SymmetricTree {
         return compare(right.left, left.right) && compare(right.right, left.left);
 
     }
+
+    // TODO: 13/02/2019 中序遍历，针对回文性质，也可以使用栈来比对，根节点的左子树不断入栈，右子树不断比较栈顶，然后元素出栈
 }

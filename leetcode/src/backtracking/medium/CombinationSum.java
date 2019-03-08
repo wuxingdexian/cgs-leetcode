@@ -50,7 +50,7 @@ public class CombinationSum {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> solutionList = new ArrayList<List<Integer>>();
-        generate(new Stack<Integer>(), candidates, 0, 0, target, solutionList);
+        generate(new Stack<Integer>(), candidates, 0, target, 0, solutionList);
         return  solutionList;
     }
     private void generate(Stack<Integer> numberStack, int[] candidates, int index,

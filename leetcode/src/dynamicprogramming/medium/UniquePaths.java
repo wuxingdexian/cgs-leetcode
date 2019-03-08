@@ -1,4 +1,4 @@
-package others.medium;
+package dynamicprogramming.medium;
 
 /**
  * <p>

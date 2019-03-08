@@ -129,6 +129,29 @@ public class MaximumSubarray {
         }
     }
 
+    /**
+     * DP解，从二维降到一维
+     *
+     * @param nums
+     * @return
+     */
+    public int maxSubArrayDp(int[] nums) {
+        // int[][] solution = new int[nums.length][nums.length];
+        int[] solutionOne = new int[nums.length];
+        int maxSum = Integer.MIN_VALUE;
+        for(int i=0; i<nums.length;i++) {
+            for(int j=i; j<nums.length;j++) {
+                // if(i==j) solution[i][j] = nums[i];
+                // else solution[i][j] = solution[i][j-1]+nums[j];
+                // maxSum = Math.max(solution[i][j], maxSum);
+                if(i==j) solutionOne[j] = nums[i];
+                else solutionOne[j] = solutionOne[j-1]+nums[j];
+                maxSum = Math.max(solutionOne[j], maxSum);
+            }
+        }
+        return maxSum;
+    }
+
     public static void main(String[] args) {
         int[] nums = {-2,1,-3,4,-1,2,1,-5,4};
 

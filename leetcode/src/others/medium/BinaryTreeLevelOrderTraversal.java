@@ -3,6 +3,7 @@ package others.medium;
 import depthfirstsearch.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -83,5 +84,30 @@ public class BinaryTreeLevelOrderTraversal {
             solution.add(node.val);
         }
         return solution;
+    }
+
+    public List<List<Integer>> levelOrderDFS(TreeNode root) {
+
+        List<List<Integer>> solutionList = new ArrayList<>();
+        if (root == null) return solutionList;
+
+        traverse(solutionList, Arrays.asList(root));
+
+        return solutionList;
+    }
+
+    private void traverse(List<List<Integer>> solutionList, List<TreeNode> currentNodes) {
+        if (currentNodes == null || currentNodes.isEmpty()) return;
+
+        List<TreeNode> nextLevelNodes = new ArrayList<>();
+        List<Integer> solution = new ArrayList<>();
+        for (TreeNode node: currentNodes) {
+            solution.add(node.val);
+            if (node.left != null) nextLevelNodes.add(node.left);
+            if (node.right != null) nextLevelNodes.add(node.right);
+        }
+
+        solutionList.add(solution);
+        traverse(solutionList, nextLevelNodes);
     }
 }

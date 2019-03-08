@@ -20,6 +20,17 @@ import java.util.*;
  * <p>
  * 1. 建模：
  * break(n) = break(n-i) && word(n-i,n)
+ *
+ * 2019-2-15建模V2
+ * 设字符串s总长为n，last_word_end_index(i)=x, 0<=x<=i<=n，表示截止字符i的最近的完整单词的结束字符的index。
+ * 则判断x，需要依次判断sub(x,i)是否是单词，不是再继续判断上一个最近的单词结束字符(index=y)到i的子串sub(y,i), 0<=y<x, 是否是单词，
+ * 如果找不到单词，则一直判断到sub(0, i)是否为单词，如果不是，则取x=last_word_end_index(i-1)。
+ * 遍历结束后，判断last_word_end_index(n)=n是否成立，即可找到答案。
+ * 当然中间可以缓存子字符串来避免子问题出现
+ *
+ * 2019-2-15建模V3
+ * 建立二维数组m，m[i,j]=true/false，表示sub(i,j)是否是单词，得到一个图的二维矩阵表示，然后遍历这个图，看是否能找到最后一个字符
+ *
  * 2. 算法范式：dynamic programming
  * 3. 算法：
  * 4. 数据结构：

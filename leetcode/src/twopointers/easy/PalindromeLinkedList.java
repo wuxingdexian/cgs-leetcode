@@ -45,6 +45,7 @@ public class PalindromeLinkedList {
             if(head.val != stack.pop().val) {
                 return false;
             }
+            head = head.next;
         }
         return true;
 

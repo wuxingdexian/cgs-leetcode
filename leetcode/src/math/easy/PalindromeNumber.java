@@ -1,5 +1,7 @@
 package math.easy;
 
+import others.easy.ReverseInteger;
+
 /**
  * <p>
  * 背景描述：
@@ -30,6 +32,9 @@ package math.easy;
  * 想法不错，但是执行下来，结果不变。应该是编译器执行优化的问题。x = (0 - (y + 1) + 1)相当于一条语句，编译器会执行优化，得到x=(0-y)。
  * 从补码知识可知，0=0x00000000，-2147483648=0x80000000，机器只执行加法，此时相加得到的还是0x80000000
  * 补发知识：http://blog.csdn.net/zq602316498/article/details/39404043
+ *
+ * TODO : 用栈也行，参考{@link ReverseInteger}
+ *
  *
  * <p>
  * <a href="dhshenchanggan@163.com" />

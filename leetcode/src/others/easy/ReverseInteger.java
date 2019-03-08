@@ -72,5 +72,10 @@ public class ReverseInteger {
     public static void main(String[] args) {
         int reverse = new ReverseInteger().reverse(123);
         System.out.println(reverse);
+
+        char[] t = new char[2];
+        t[0] = '1';
+        t[1] = '1';
+        System.out.println(String.valueOf(t));
     }
 }

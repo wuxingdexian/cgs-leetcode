@@ -26,6 +26,11 @@ package dynamicprogramming.medium;
  *      从第一个负数后的第一个元素开始迭代乘积afterNegativeProduct，则afterNegativeProduct和max_n比较
  * 执行上面两个判断是因为偶数个负数的乘积为正数
  *
+ * 2019.2.17 建模V3
+ * 首先按0将数组分成了不同的小区域：___,0,_____,0,______；从每个小区域的值和0中取最大值。
+ * 设p(i)为子区域内从0到i的的乘积；first_negative_index=x，为子区域内第一个为负数元素的索引；total_negative=y，为子区域内所有负数元素的个数
+ * 则某区域的最大值，sub_max = p(n)，当total_negative为偶数
+ *                           p(n) / p(x)，当total_negative为奇数
  *
  * 2. 算法范式：dynamic programming，
  * 当然分割0子数组，也可以分治法考虑，当遇到第一个0，则裂变左右两个数组，左边数组按上述不含0的情况处理，右边按包含0得情况递归。最后合并取两边得max

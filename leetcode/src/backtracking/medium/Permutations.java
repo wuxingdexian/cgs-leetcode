@@ -38,14 +38,14 @@ import java.util.List;
  */
 public class Permutations {
     public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> solutions = new ArrayList();
-        generate(new ArrayList(), nums, 0, new boolean[nums.length], solutions);
+        List<List<Integer>> solutions = new ArrayList<>();
+        generate(new ArrayList<>(), nums, 0, new boolean[nums.length], solutions);
         return solutions;
 
     }
     private void generate(List<Integer> permutation, int[] nums, int step, boolean[] flag, List<List<Integer>> solutions) {
         if(step == nums.length) {
-            solutions.add(new ArrayList(permutation));
+            solutions.add(new ArrayList<>(permutation));
             return;
         }
 

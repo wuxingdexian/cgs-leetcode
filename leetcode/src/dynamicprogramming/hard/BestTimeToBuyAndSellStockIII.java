@@ -62,6 +62,54 @@ import dynamicprogramming.easy.BestTimeToBuyAndSellStock;
  */
 public class BestTimeToBuyAndSellStockIII {
 
+
+    /**
+     * 直接整体去思考整个问题的DP解的子问题，好难。先拆解问题到小问题，然后再找小问题的DP解，此时小问题已经可以找到DP解的子问题了
+     *
+     * 设p[1,...,n]为价格数组
+     * max1(i)为从p[1]到p[i]时的最大收益
+     * max2(j)为从p[j]到p[n]时的最大收益
+     * 则maxProfit = max(max1(i) + max2(j)), 1<=i<j<=n
+     *
+     * 初始化max1(0)=0，计算max1(i)，从前往后遍历，记录每个到达p[i]时遇到的最小值_min，max1(i)=max(p[i]-_min, max1(i-1))
+     *
+     * 初始化max1(n+1)=0，计算max2(j)，从后往前遍历，记录每个p[j]的遇到的最大值_max，max2(j)=max(_max-p[j], max2(j+1))
+     *  14/10/2018
+     * @param prices
+     * @return
+     */
+    public int maxProfitWithDP(int[] prices) {
+        if(prices == null || prices.length == 0) {
+            return 0;
+        }
+
+        int[] maxLeft2Right = new int[prices.length];
+        int[] maxRight2Left = new int[prices.length];
+
+        int min = prices[0];
+        for(int i = 1; i < prices.length; i++) {
+            if(prices[i] < min) {
+                min = prices[i];
+            }
+            maxLeft2Right[i] = Math.max(prices[i]-min, maxLeft2Right[0]);
+        }
+
+        int max = prices[prices.length-1];
+        for(int j = prices.length-2; j>=0; j--) {
+            if(prices[j] > max) {
+                max = prices[j];
+            }
+            maxRight2Left[j] = Math.max(max-prices[j], maxRight2Left[j+1]);
+        }
+
+        // maxLeft2Right[prices.length-1] == maxRight2Left[0] 这里取一个就行
+        int maxProfit = maxLeft2Right[prices.length-1];
+        for(int i = 0; i < prices.length-1; i++) {
+            maxProfit = Math.max(maxProfit, maxLeft2Right[i] + maxRight2Left[i+1]);
+        }
+        return maxProfit;
+    }
+
     /**
      * 和maxProfitStandard类似，maxProfitStandard本质也是用到了DP，知识优化了存储空间。这里讲DP公式给出
      *
@@ -124,5 +172,7 @@ public class BestTimeToBuyAndSellStockIII {
         int[] nums = {8,8,9,2,4,3,8,11};
         int i = new BestTimeToBuyAndSellStockIII().maxProfit(nums);
         System.out.println(i);
+        int j = new BestTimeToBuyAndSellStockIII().maxProfitWithDP(nums);
+        System.out.println(j);
     }
 }
